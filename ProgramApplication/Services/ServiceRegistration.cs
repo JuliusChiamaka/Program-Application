@@ -1,5 +1,6 @@
 ﻿using Microsoft.Azure.Cosmos;
 using ProgramApplication.Configurations;
+using ProgrammeApplication.Services;
 
 namespace ProgramApplication.Services
 {
@@ -7,20 +8,24 @@ namespace ProgramApplication.Services
     {
         public static void AddApplicationServices(this IServiceCollection services, IConfiguration configuration)
         {
-            var cosmosDbSettings = new CosmosDbSettings();
-            configuration.Bind(nameof(CosmosDbSettings), cosmosDbSettings);
+            var cosmosDbSettings = new AppConfig();
+            configuration.Bind(nameof(AppConfig), cosmosDbSettings);
             services.AddSingleton(cosmosDbSettings);
 
             services.AddSingleton<CosmosClient>(sp =>
             {
-                return new CosmosClient(cosmosDbSettings.AccountEndpoint, cosmosDbSettings.AccountKey);
+                return new CosmosClient(cosmosDbSettings.CosmosDbEndpoint, cosmosDbSettings.CosmosDbKey);
             });
 
-            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+            services.AddAutoMapper(typeof(AutoMapperProfile));
+
 
             // Register services
-            services.AddScoped<IApplicationService, ApplicationService>();
-            // Add other service registrations here
+            services.AddScoped<IApplicationFormService, ApplicationFormService>();
+            services.AddScoped<IProgrammeService, ProgrammeService>();
+            services.AddScoped<IQuestionService, QuestionService>();
+
+            
         }
     }
 }

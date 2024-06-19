@@ -1,12 +1,13 @@
 ﻿using ProgramApplication.Models;
 
-namespace ProgramApplication
+namespace ProgramApplication.DTOs
 {
     public class CustomQuestionDto
     {
-        public string Question { get; set; }
-        public QuestionType QuestionType { get; set; }
-        public bool Internal { get; set; }
+        public string QuestionType { get; set; }
+        public string QuestionText { get; set; }
+        public bool IsInternal { get; set; }
         public bool Hide { get; set; }
+        public string Answer { get; set; }
     }
 }
